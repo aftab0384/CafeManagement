@@ -14,7 +14,13 @@ public class Test {
     String test(){
         if(jwtfilter.isAdmin()){
             System.out.println("it is admin");
-            System.out.println("it is admin");System.out.println("it is admin");
+            System.out.println("it is admin");
+            System.out.println("it is admin");
+            System.out.println("it is admin");
+            System.out.println("it is admin");
+            System.out.println("it is admin");
+            System.out.println("it is admin");
+            System.out.println("it is admin");
 
 
 
