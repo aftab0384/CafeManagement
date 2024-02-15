@@ -15,14 +15,6 @@ public class Test {
         if(jwtfilter.isAdmin()){
             System.out.println("it is admin");
             System.out.println("it is admin");
-            System.out.println("it is admin");
-            System.out.println("it is admin");
-            System.out.println("it is admin");
-            System.out.println("it is admin");
-            System.out.println("it is admin");
-            System.out.println("it is admin");
-
-
 
             return "hi i am admin";
         }else if(jwtfilter.isUser()){
@@ -30,8 +22,6 @@ public class Test {
         }else {
             return "both is there";
         }
-
-       // return "Hello this is test api";
     }
 
 
