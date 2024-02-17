@@ -3,6 +3,8 @@ package com.cafe.controller;
 import com.cafe.jwt.JwtFilter;
 import com.cafe.model.User;
 import com.cafe.repository.UserRepository;
+import com.cafe.utils.CafeCommon;
+import com.cafe.utils.EmailUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ public class UserGeneralDetailsController {
     UserRepository userRepo;
     @Autowired
     JwtFilter jwtfilter;
+    @Autowired
+    EmailUtils emailUtils;
     @PostMapping("/getUserDetails")
     ResponseEntity<?> getUser(){
         Map<String, Object> returnMap = new HashMap<>();
@@ -72,8 +76,16 @@ public class UserGeneralDetailsController {
     return ResponseEntity.ok(returnMap);
     }
 
-    private void sendMailToAllAdmin(boolean status, String email, List<Object[]> allAdmin) {
+    private void sendMailToAllAdmin(boolean status, String email, List<String> allAdmin) {
         System.out.println("send mail function");
+        System.out.println(CafeCommon.getLoggedinUserName());
+        allAdmin.remove(CafeCommon.getLoggedinUserName());
+        if (status) {
+            emailUtils.sendSimpleMail(CafeCommon.getLoggedinUserName(), "Account Approved", "USER:- " + email + " \nApproved by \nADMIN:- " + CafeCommon.getLoggedinUserName(), allAdmin);
+        }else {
+            emailUtils.sendSimpleMail(CafeCommon.getLoggedinUserName(), "Account disabled", "USER:- " + email + " \nApproved by \nADMIN:- " + CafeCommon.getLoggedinUserName(), allAdmin);
+
+        }
     }
 
 

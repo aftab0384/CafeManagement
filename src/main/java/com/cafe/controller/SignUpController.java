@@ -85,10 +85,8 @@ public class SignUpController {
 
     /*====================login=========================*/
     @PostMapping("/login")
-    public ResponseEntity<?> createToken(@RequestBody JwtRequestModel
+    public ResponseEntity<?> loginMethod(@RequestBody JwtRequestModel
                                                  request, HttpServletRequest httpRequest) throws Exception{
-        System.out.println("login controller is working************" + request);
-
         String token=jwtSecurityService.authToken(request.getUsername(),request.getPassword());
         if(token.equalsIgnoreCase("false")){
             return ResponseEntity.badRequest().body("please wait for admin approval");

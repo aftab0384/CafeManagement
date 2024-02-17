@@ -24,5 +24,5 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     List<Object[]> getAllUser();
 
     @Query(value="SELECT u.email FROM user AS u JOIN user_roles AS ur ON u.user_id=ur.user_id WHERE ur.role='ADMIN'",nativeQuery = true)
-    List<Object[]> getAllAdmin();
+    List<String> getAllAdmin();
 }
