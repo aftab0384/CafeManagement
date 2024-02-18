@@ -6,6 +6,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Date;
 
 public class CafeCommon {
+
+    public static final String  SOMETHING_WENT_WRONG = "something went wrong";
+    public static final String INVALID_DATA = "Invalid data entered";
     public static Date getCurrentDate() {
         Date date = new Date();
         return date;

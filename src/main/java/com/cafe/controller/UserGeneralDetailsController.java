@@ -9,11 +9,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+
+import static com.cafe.utils.CafeCommon.SOMETHING_WENT_WRONG;
 
 @RestController
 public class UserGeneralDetailsController {
@@ -23,6 +27,7 @@ public class UserGeneralDetailsController {
     JwtFilter jwtfilter;
     @Autowired
     EmailUtils emailUtils;
+    //---------------- get user details---------------
     @PostMapping("/getUserDetails")
     ResponseEntity<?> getUser(){
         Map<String, Object> returnMap = new HashMap<>();
@@ -88,5 +93,27 @@ public class UserGeneralDetailsController {
         }
     }
 
-
+    //---------------- change password ---------------
+    @PostMapping("/changePassword")
+    ResponseEntity<?> changePassword(HttpServletRequest request){
+        try {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String oldPassword = request.getParameter("oldPassword");
+            String newPassword = request.getParameter("newPassword");
+            User user = userRepo.findByEmail(CafeCommon.getLoggedinUserName());
+            if (user != null) {
+                if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+                    user.setPassword(passwordEncoder.encode(newPassword));
+                    userRepo.save(user);
+                    emailUtils.sendSimpleMail(CafeCommon.getLoggedinUserName(),"Password changed","Hi " + user.getName()+" Your password has been changed.",null);
+                    return ResponseEntity.ok().body("password updated successfully");
+                }
+                return ResponseEntity.badRequest().body("incorrect old password");
+            }
+            return ResponseEntity.badRequest().body(SOMETHING_WENT_WRONG);
+        }catch (Exception e){
+            e.fillInStackTrace();
+        }
+            return ResponseEntity.badRequest().body(SOMETHING_WENT_WRONG);
+        }
 }

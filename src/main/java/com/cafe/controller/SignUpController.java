@@ -1,21 +1,19 @@
 package com.cafe.controller;
 
-import com.cafe.consents.CafeCommon;
 import com.cafe.jwt.JwtFilter;
 import com.cafe.jwt.JwtRequestModel;
 import com.cafe.jwt.JwtSecurityService;
 import com.cafe.model.User;
 import com.cafe.repository.UserRepository;
 import com.cafe.service.UserRegisterMasterService;
+import com.cafe.utils.CafeCommon;
+import com.cafe.utils.EmailUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,6 +33,8 @@ public class SignUpController {
     private JwtSecurityService jwtSecurityService;
     @Autowired
     private UserRegisterMasterService userRegisterService;
+    @Autowired
+    private EmailUtils emailUtils;
 
     @Autowired
     JwtFilter jwtfilter;
@@ -96,6 +96,20 @@ public class SignUpController {
         map.put("data", userRegisterService.loggerDetails(request.getUsername()));
         String json= JSON.toString(map);
         return jwtSecurityService.createAuthToken(json);
+    }
+
+    @PostMapping("/forgetPassword")
+    ResponseEntity<?> forgetPassword(@RequestBody Map<String, String> requestMap){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+                    String email = requestMap.get("email");
+                    User user = userRepo.findByEmail(email);
+                    if(user!=null && user.getEmail()!=null){
+                        //emailUtils.forgetPasswordMail(email,"your credential by Cafe Management",);
+                    }
+
+
+        return ResponseEntity.badRequest().body(CafeCommon.SOMETHING_WENT_WRONG);
     }
 
 }

@@ -36,8 +36,6 @@ public class JwtUserDetailsService implements UserDetailsService {
             Collection<GrantedAuthority> authorities = roles.stream()
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                     .collect(Collectors.toList());
-            System.out.println("user details****************");
-            System.out.println(authorities);
             return new CustomUserDetails(
                     userdetail.getEmail(),
                     userdetail.getPassword(),
