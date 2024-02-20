@@ -9,6 +9,7 @@ import com.cafe.utils.CafeCommon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,7 @@ public class ProductController {
                     product.setCategory(category);
                     product.setDescription(description);
                     product.setPrice(productPrice);
+                    product.setStatus(true);
                     productRepo.save(product);
                     return ResponseEntity.ok().body("product successfully added");
 
@@ -98,4 +100,50 @@ public class ProductController {
         }
         return new ResponseEntity<List<Product>>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    //---------- delete by id -----------//
+    @PostMapping("/deleteProduct/{productId}")
+    ResponseEntity<?> deleteProduct(@PathVariable int productId){
+        System.out.println("delete api===========");
+        try {
+            if (jwtFilter.isAdmin()) {
+                Product product = productRepo.findByProductId(productId);
+                if (product != null) {
+                    System.out.println("under delete api");
+                    System.out.println(productId);
+                    productRepo.delete(product);
+                    return ResponseEntity.ok().body("product deleted successfully");
+                }
+            } else {
+                return ResponseEntity.badRequest().body("Unauthorized person");
+            }
+        }catch (Exception e){
+            e.fillInStackTrace();
+        }
+        return ResponseEntity.badRequest().body(CafeCommon.SOMETHING_WENT_WRONG);
+    }
+
+    //---------- update product status api -----------//
+    @PostMapping("/updateProductStatus")
+    ResponseEntity<?> updateProductStatus(@RequestBody Map<String,String> requestMap){
+        try {
+            if (jwtFilter.isAdmin()) {
+                int id = Integer.parseInt(requestMap.get("productId"));
+                boolean status = Boolean.parseBoolean(requestMap.get("status"));
+                Product product = productRepo.findByProductId(id);
+                if (product != null) {
+                    product.setStatus(status);
+                    productRepo.save(product);
+                    return ResponseEntity.ok().body("product status updated successfully");
+                }
+            } else {
+                return ResponseEntity.badRequest().body("Unauthorized person");
+            }
+        }catch (Exception e){
+            e.fillInStackTrace();
+        }
+        return ResponseEntity.badRequest().body(CafeCommon.SOMETHING_WENT_WRONG);
+    }
+
+
 }

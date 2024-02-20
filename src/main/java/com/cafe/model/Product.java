@@ -22,7 +22,8 @@ public class Product implements Serializable {
 
     private String description;
     private int price;
-    private Boolean Status;
+    @Column(name = "status", columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private Boolean status;
 
     public int getProductId() {
         return productId;
@@ -65,10 +66,10 @@ public class Product implements Serializable {
     }
 
     public Boolean getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(Boolean status) {
-        Status = status;
+        this.status = status;
     }
 }
