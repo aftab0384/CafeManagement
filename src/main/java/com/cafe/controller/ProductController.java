@@ -145,5 +145,31 @@ public class ProductController {
         return ResponseEntity.badRequest().body(CafeCommon.SOMETHING_WENT_WRONG);
     }
 
+    //---------- get product by category api -----------//
+    @PostMapping("/getProductByCategory/{categoryId}")
+    ResponseEntity<List<Product>> getProductByCategory(@PathVariable int categoryId){
+        try {
+            List<Product> products = productRepo.getProductByCategory(categoryId);
+            if (products != null) {
+                return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            e.fillInStackTrace();
+        }
+        return new ResponseEntity<List<Product>>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
+    //---------- get product by id api -----------//
+    @PostMapping("/getProductById/{productId}")
+    ResponseEntity<?> getProductById(@PathVariable int productId){
+        System.out.println("testing-------------------");
+        try {
+            Product products = productRepo.findByProductId(productId);
+            if (products != null) {
+                return new ResponseEntity<>(products, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            e.fillInStackTrace();
+        }
+        return  ResponseEntity.badRequest().body(HttpStatus.INTERNAL_SERVER_ERROR);    }
 }
