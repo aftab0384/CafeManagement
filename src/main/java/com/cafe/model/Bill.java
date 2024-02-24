@@ -23,6 +23,7 @@ public class Bill implements Serializable {
     private String productDetails;
 
     private int createdBy;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdOn;
 
     public int getBillId() {
@@ -97,7 +98,7 @@ public class Bill implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Date getCreatedOn() {
+    public Date getCreatedOn(Date currentDate) {
         return createdOn;
     }
 
