@@ -86,9 +86,9 @@ public class UserGeneralDetailsController {
         System.out.println(CafeCommon.getLoggedinUserName());
         allAdmin.remove(CafeCommon.getLoggedinUserName());
         if (status) {
-            emailUtils.sendSimpleMail(CafeCommon.getLoggedinUserName(), "Account Approved", "USER:- " + email + " \nApproved by \nADMIN:- " + CafeCommon.getLoggedinUserName(), allAdmin);
+            emailUtils.sendGroupMail(CafeCommon.getLoggedinUserName(), "Account Approved", "USER:- " + email + " \nApproved by \nADMIN:- " + CafeCommon.getLoggedinUserName(), allAdmin);
         }else {
-            emailUtils.sendSimpleMail(CafeCommon.getLoggedinUserName(), "Account disabled", "USER:- " + email + " \nApproved by \nADMIN:- " + CafeCommon.getLoggedinUserName(), allAdmin);
+            emailUtils.sendGroupMail(CafeCommon.getLoggedinUserName(), "Account disabled", "USER:- " + email + " \nApproved by \nADMIN:- " + CafeCommon.getLoggedinUserName(), allAdmin);
 
         }
     }
@@ -105,7 +105,7 @@ public class UserGeneralDetailsController {
                 if (passwordEncoder.matches(oldPassword, user.getPassword())) {
                     user.setPassword(passwordEncoder.encode(newPassword));
                     userRepo.save(user);
-                    emailUtils.sendSimpleMail(CafeCommon.getLoggedinUserName(),"Password changed","Hi " + user.getName()+" Your password has been changed.",null);
+                    emailUtils.sendGroupMail(CafeCommon.getLoggedinUserName(),"Password changed","Hi " + user.getName()+" Your password has been changed.",null);
                     return ResponseEntity.ok().body("password updated successfully");
                 }
                 return ResponseEntity.badRequest().body("incorrect old password");

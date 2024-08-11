@@ -12,4 +12,6 @@ public interface BillRepository extends JpaRepository<Bill,Integer> {
 
     @Query(value = "SELECT * FROM bill AS b WHERE b.created_by=?1 ORDER BY bill_id DESC;", nativeQuery = true)
     List<Bill> getBillByUserId(int createdBy);
+    @Query(value = "select count(*) from bill;", nativeQuery = true)
+    Integer getCount();
 }

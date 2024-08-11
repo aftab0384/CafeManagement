@@ -54,7 +54,7 @@ public class TokenManager implements Serializable {
         List<String> roles = customUserDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-        System.out.println("in jwe security role is" + roles);
+        System.out.println("in jwt security role is" + roles);
         for( String role : roles){
             System.out.println("in jwe security role is" + role);
         }

@@ -15,7 +15,7 @@ public class EmailUtils {
     @Autowired
     JavaMailSender javamail;
 
-    public void sendSimpleMail(String to, String subject, String text, List<String> list){
+    public void sendGroupMail(String to, String subject, String text, List<String> list){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("aftab.knit@gmail.com");
         message.setTo(to);
@@ -28,13 +28,14 @@ public class EmailUtils {
         javamail.send(message);
     }
 
-    public void forgetPasswordMail(String to, String subject, String password) throws MessagingException {
+    public void sendIndividualMail(String to, String subject, String mailMessage) throws MessagingException {
         MimeMessage mimeMessage = javamail.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
         helper.setFrom("aftab.knit@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
-        String htmlMessage = "<p><b>Your login details for Cafe management is</b><br><b>Email: </b> " + to + " <br><b>Password is: </b> "+ password +"<br><a href=\"http://localhost:4200/\">Click here to login</a></p>";
+        //String htmlMessage = "<p><b>Your login details for Cafe management is</b><br><b>Email: </b> " + to + " <br><b>Password is: </b> "+ password +"<br><a href=\"http://localhost:4200/\">Click here to login</a></p>";
+        String htmlMessage = mailMessage;
         mimeMessage.setContent(htmlMessage,"text/html");
         javamail.send(mimeMessage);
     }
