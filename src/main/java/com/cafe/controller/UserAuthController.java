@@ -95,8 +95,7 @@ public class UserAuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginMethod(@RequestBody JwtRequestModel
                                                  request, HttpServletRequest httpRequest) throws Exception {
-        System.out.println("api is working fine--------------");
-        System.out.println(request.getUsername() + " " + request.getPassword());
+       // System.out.println("api is working fine--------------");
         String token = jwtSecurityService.authToken(request.getUsername(), request.getPassword());
         if (token.equalsIgnoreCase("false")) {
             return ResponseEntity.badRequest().body("please wait for admin approval");
@@ -113,9 +112,6 @@ public class UserAuthController {
         Map<String, Object> responseMap = new HashMap<>();
         try {
             String email = requestMap.get("email");
-            User user = userRepo.findByEmail(email);
-            System.out.println("username");
-
                 responseMap = userAuthService.userForgotPassword(email);
                 if ((boolean)responseMap.get("status")) {
                     return ResponseEntity.ok(responseMap);

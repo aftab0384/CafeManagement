@@ -6,6 +6,7 @@ import com.cafe.utils.CafeCommon;
 import com.cafe.utils.EmailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -58,12 +59,14 @@ public class UserAuthService {
         Map<String, Object> map = new HashMap<>();
         try {
             User user = userRepo.findByEmail(email);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(password);
             if (user != null) {
                 String existingOtp = user.getUserOtp();
                 Date otpExpiredAt = user.getOtpExpiredAt();
                 if (userOtp.equalsIgnoreCase(existingOtp) && otpExpiredAt.after(CafeCommon.getCurrentDate())) {
                    try {
-                       user.setPassword(password);
+                       user.setPassword(encodedPassword);
                        user.setUpdatedAt(CafeCommon.getCurrentDate());
                        user.setUpdatedBy(CafeCommon.getLoggedinUserName());
                        userRepo.save(user);

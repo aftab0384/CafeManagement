@@ -29,7 +29,8 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "status")
+
+    @Column(name = "status", columnDefinition = "boolean default true")
     private boolean status;
     @Column(name = "user_otp")
     private String userOtp;

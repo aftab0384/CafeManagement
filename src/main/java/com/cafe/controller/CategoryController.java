@@ -7,6 +7,7 @@ import com.cafe.utils.CafeCommon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000","http://localhost:3001", "http://localhost:4000"})
 public class CategoryController {
     @Autowired
     JwtFilter jwtfilter;
@@ -25,13 +27,20 @@ public class CategoryController {
     //---------- add category api -----------//
     @PostMapping("/addCategory")
     ResponseEntity<?> addCategory(@RequestBody Map<String,String> requestMap){
+        System.out.println("in category api============");
         try {
             if (jwtfilter.isAdmin()) {
                 String categoryName = requestMap.get("categoryName");
+                String description = requestMap.get("description");
                 Category category = new Category();
                 if (categoryName != null) {
                     category.setCategoryName(categoryName);
-                    categoryRepo.save(category);
+                    category.setDescription(description);
+                    category.getCreatedAt(CafeCommon.getCurrentDate());
+                    category.getCreatedBy(CafeCommon.getLoggedinUserName());
+                    System.out.println(CafeCommon.getCurrentDate());
+                    System.out.println(CafeCommon.getLoggedinUserName());
+                   // categoryRepo.save(category);
                     return ResponseEntity.ok().body("category added successfully added");
                 }
             } else {
@@ -81,6 +90,5 @@ public class CategoryController {
         }
             return new ResponseEntity<List<Category>>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
 }
