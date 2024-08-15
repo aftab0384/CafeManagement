@@ -36,11 +36,10 @@ public class CategoryController {
                 if (categoryName != null) {
                     category.setCategoryName(categoryName);
                     category.setDescription(description);
-                    category.getCreatedAt(CafeCommon.getCurrentDate());
-                    category.getCreatedBy(CafeCommon.getLoggedinUserName());
-                    System.out.println(CafeCommon.getCurrentDate());
-                    System.out.println(CafeCommon.getLoggedinUserName());
-                   // categoryRepo.save(category);
+                    category.setCreatedAt(CafeCommon.getCurrentDate());
+                    category.setCreatedBy(CafeCommon.getLoggedinUserName());
+                    category.setActive(true);
+                    categoryRepo.save(category);
                     return ResponseEntity.ok().body("category added successfully added");
                 }
             } else {
