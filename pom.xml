@@ -14,7 +14,7 @@
 	<name>CafeManagement</name>
 	<description>CafeManagementBackend project</description>
 	<properties>
-		<java.version>21.0.4</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -126,6 +126,15 @@
 					</excludes>
 				</configuration>
 			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-compiler-plugin</artifactId>-->
+<!--				<version>3.11.0</version> &lt;!&ndash; Use a version that supports Java 21 &ndash;&gt;-->
+<!--				<configuration>-->
+<!--					<source>21</source>-->
+<!--					<target>21</target>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 
